@@ -6,13 +6,11 @@
         <h1>{{user.name}}</h1>
       </div>
       <div>
-        <p>
-          <a @click="toggleUpload"><i class="far fa-image"></i></a>
-          <a href="#" @click="logout"><i class="fas fa-sign-out-alt"></i></a>
+        <p id="logoutButton">
+          <a href="#" @click="logout">Log Out</a>
         </p>
       </div>
     </div>
-    <!--<escape-event @escape="escape"></escape-event>-->
   </div>
   <div v-else-if="!loggingIn">
     <p>If you would like to save or view your scores, please register for an account or login.</p>
@@ -74,13 +72,9 @@
 </template>
 
 <script>
-import EscapeEvent from '@/components/EscapeEvent.vue'
 
 export default {
-  name: 'mypage',
-  components: {
-    EscapeEvent,
-  },
+  name: 'login',
   data() {
     return {
       loggingIn: false,
@@ -103,8 +97,8 @@ export default {
     async logout() {
       try {
         this.error = await this.$store.dispatch("logout");
-        this.loggingIn = false;
-        this.action = "";
+        this.escape();
+        this.$emit('logOut');
       } catch (error) {
         console.log(error);
       }
@@ -116,7 +110,9 @@ export default {
           password: this.password
         });
         if (this.error === "")
-          this.$router.push('mypage');
+            this.escape();
+            this.$emit('logIn');
+          //this.$router.push('');
       } catch (error) {
         console.log(error);
       }
@@ -129,7 +125,9 @@ export default {
           password: this.password
         });
         if (this.error === "")
-          this.$router.push('mypage');
+            this.escape();
+            this.$emit('logIn');
+          //this.$router.push('mypage');
       } catch (error) {
         console.log(error);
       }
@@ -137,6 +135,10 @@ export default {
     escape() {
         this.action = "";
         this.loggingIn = false;
+        this.name = "";
+        this.username = "";
+        this.password = "";
+        this.error = "";
     },
     actionToLogin () {
         this.action = "login";
@@ -152,13 +154,24 @@ export default {
 </script>
 
 <style scoped>
+p#logoutButton {
+    text-align: center;
+    margin: 2em;
+}
+
+a {
+    text-decoration: none;
+    border: black 1px solid;
+    padding: .25em;
+    border-radius: 10px;
+}
+
 .header {
   display: flex;
 }
 .header a {
-  padding-left: 50px;
   color: #222;
-  font-size: 2em;
+  font-size: 1em;
 }
 .header svg {
   margin-top: 12px;

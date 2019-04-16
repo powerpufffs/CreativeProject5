@@ -1,18 +1,20 @@
 <template>
   <div class="home">
     <Game v-if="loggedIn"/>
-    <LogIn v-else/>
+    <LogIn v-else @login="login" @logOut="logout"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import Game from '@/components/Game.vue'
+import LogIn from '@/components/LogIn.vue'
 
 export default {
   name: 'home',
   components: {
-    Game
+    Game,
+    LogIn
   },
   data: function() {
     return {
@@ -20,7 +22,12 @@ export default {
     }
   },
   methods: {
-
+    login () {
+      this.loggedIn = true;
+    },
+    logout () {
+      this.loggedIn = false;
+    }
   },
 }
 </script>
