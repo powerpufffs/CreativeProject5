@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <Game/>
+    <Game v-if="loggedIn"/>
+    <LogIn v-else/>
   </div>
 </template>
 
@@ -12,6 +13,11 @@ export default {
   name: 'home',
   components: {
     Game
+  },
+  data: function() {
+    return {
+      loggedIn: false,
+    }
   },
   methods: {
 
