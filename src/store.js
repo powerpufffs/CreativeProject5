@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     cards: [],
+    games: [],
   },
   mutations: {
     setUser(state, user) {
@@ -15,7 +16,13 @@ export default new Vuex.Store({
     },
     setCards(state, cards) {
       state.cards = cards;
-    }
+    },
+    setScores(state, scores) {
+      state.scores = scores;
+    },
+    setGames(state, games) {
+      state.games = games;
+    },
   },
   actions: {
     async getCards(context) {
@@ -66,7 +73,17 @@ export default new Vuex.Store({
     async finishGame(context, data) {
       try {
         let response = await axios.post("/api/games", data);
+        console.log(response);
       } catch(error) {
+        return error.response.data.message;
+      }
+    },
+    async getGames(context, data) {
+      try {
+        let response = await axios.get("/api/games", data);
+        context.commit('setGames', response.data);
+        return "";
+      } catch (error) {
         return error.response.data.message;
       }
     }

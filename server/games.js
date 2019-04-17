@@ -21,16 +21,16 @@ const gameSchema = new mongoose.Schema({
 
 const Game = mongoose.model('games', gameSchema);
 
-// get all user's games
-router.get("/:id", auth.verifyToken, User.verify, async (req, res) => {
-    try {
-        let cards = await Game.find();
-        return res.send(cards);
-      } catch (error) {
-        console.log(error);
-        return res.sendStatus(500);
-      }
-});
+// // get all user's games
+// router.get("/:id", auth.verifyToken, User.verify, async (req, res) => {
+//     try {
+//         let cards = await Game.find();
+//         return res.send(cards);
+//       } catch (error) {
+//         console.log(error);
+//         return res.sendStatus(500);
+//       }
+// });
 
 // upload single game
 router.post("/", auth.verifyToken, User.verify, async (req, res) => {
@@ -47,6 +47,17 @@ router.post("/", auth.verifyToken, User.verify, async (req, res) => {
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
+    }
+})
+
+// get all games
+router.get("/", async (req, res) => {
+    try {
+        let cards = await Game.find();
+        return res.send(cards);
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500);
     }
 })
 

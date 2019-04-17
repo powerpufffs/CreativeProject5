@@ -82,7 +82,6 @@ export default {
 			return ((firstCard.name === secondCard.name) ? true : false);
 		},
 		async endGame() {
-      
       this.gameOver = true;
 			alert(`You Won! You completed the game in: ${ this.duration } seconds`);
       let data = new Object();
@@ -96,7 +95,7 @@ export default {
       data.turns = this.turns;
       data.duration = this.duration;
       try {
-        var error = await this.$store.dispatch("finishGame", data);
+        await this.$store.dispatch("finishGame", data);
         this.$router.push('Leaderboard');
       } catch (error) {
         console.log(error);
@@ -109,7 +108,7 @@ export default {
 			this.timer();
 		},
 		timer() {
-			let t = setTimeout(this.incrementTime, 1000);
+			setTimeout(this.incrementTime, 1000);
     },
     prepareCards() {
       this.cards = this.cards

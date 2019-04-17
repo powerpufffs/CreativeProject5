@@ -176,6 +176,7 @@ a {
 
 .header {
   display: flex;
+  justify-content: center;
 }
 .header a {
   color: #222;
