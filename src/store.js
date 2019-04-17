@@ -62,5 +62,12 @@ export default new Vuex.Store({
         return "";
       }
     },
+    async finishGame(context, data) {
+      try {
+        let response = await axios.post("/api/games", data);
+      } catch(error) {
+        return error.response.data.message;
+      }
+    }
   }
 })

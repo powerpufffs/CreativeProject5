@@ -13,13 +13,16 @@ const gameSchema = new mongoose.Schema({
     name: String,
     turns: Number,
     duration: Number,
-    date: String,
+    created: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 const Game = mongoose.model('games', gameSchema);
 
-// get all games
-router.get("/", auth.verifyToken, User.verify, async (req, res) => {
+// get all user's games
+router.get("/:id", auth.verifyToken, User.verify, async (req, res) => {
     try {
         let cards = await Game.find();
         return res.send(cards);
@@ -36,7 +39,6 @@ router.post("/", async (req, res) => {
         name: req.user.name,
         turns: req.body.turns,
         duration: req.body.duration,
-        date: req.body.date,
     });
 
     try {

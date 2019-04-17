@@ -1,7 +1,7 @@
 <template>
   <div class="home">
+    <LogIn @logInEmit="login()" @logOutEmit="logout()"/>
     <Game v-if="loggedIn"/>
-    <LogIn v-else @login="login" @logOut="logout"/>
   </div>
 </template>
 

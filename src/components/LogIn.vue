@@ -12,7 +12,7 @@
       </div>
     </div>
   </div>
-  <div v-else-if="!loggingIn">
+  <div v-if="!loggingIn && !user">
     <p>If you would like to save or view your scores, please register for an account or login.</p>
     <button class="pure-button" @click="actionToRegister">Register</button> or
     <button class="pure-button" @click="actionToLogin">Login</button>
@@ -92,18 +92,26 @@ export default {
   },
   async created() {
     await this.$store.dispatch("getUser");
+    if (this.user) {
+        this.escape();
+        this.$emit('logInEmit');
+    } else {
+        this.escape();
+        this.$emit('logOutEmit');
+    }
   },
   methods: {
     async logout() {
       try {
         this.error = await this.$store.dispatch("logout");
         this.escape();
-        this.$emit('logOut');
+        this.$emit('logOutEmit');
       } catch (error) {
         console.log(error);
       }
     },
     async login() {
+        console.log("hey");
       try {
         this.error = await this.$store.dispatch("login", {
           username: this.username,
@@ -111,7 +119,7 @@ export default {
         });
         if (this.error === "")
             this.escape();
-            this.$emit('logIn');
+            this.$emit('logInEmit');
           //this.$router.push('');
       } catch (error) {
         console.log(error);
@@ -126,7 +134,7 @@ export default {
         });
         if (this.error === "")
             this.escape();
-            this.$emit('logIn');
+            this.$emit('logInEmit');
           //this.$router.push('mypage');
       } catch (error) {
         console.log(error);

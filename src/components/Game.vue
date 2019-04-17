@@ -77,15 +77,28 @@ export default {
 		checkMatch(firstCard, secondCard) {
 			return ((firstCard.name === secondCard.name) ? true : false);
 		},
-		endGame() {
-			this.gameOver = true;
+		async endGame() {
+      
+      this.gameOver = true;
 			alert(`You Won! You completed the game in: ${ this.duration } seconds`);
       let data = new Object();
-      data.turns = this.turns,
-      data.duration = this.duration,
-      data.date = Date(),
-      this.$emit('gameFinished',data);
-      this.$router.push('Leaderboard');
+      if (this.user) {
+        data.name = this.user.name;
+        data.user = this.user;
+      } else {
+        data.name = "Guest";
+        data.user = "Guest";
+      }
+      data.turns = this.turns;
+      data.duration = this.duration;
+      try {
+        var error = await this.$store.dispatch("finishGame", data);
+        this.$router.push('Leaderboard');
+      } catch (error) {
+        console.log(error);
+      }
+      //this.$emit('gameFinished',data);
+      
 		},
 		incrementTime() {
 			this.duration++;
@@ -95,9 +108,15 @@ export default {
 			setTimeout(this.incrementTime, 1000);
     },
   },
+  computed: {
+    user: function() {
+      return this.$store.state.user;
+    }
+  },
   async created() {
     await this.$store.dispatch("getCards");
-  }
+    await this.$store.dispatch("getUser");
+  },
 }
 </script>
 
