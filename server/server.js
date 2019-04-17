@@ -27,5 +27,3 @@ const games = require("./games.js");
 app.use("/api/games", games.routes);
 
 app.listen(3012, () => console.log('Server listening on port 3012!'));
-
-

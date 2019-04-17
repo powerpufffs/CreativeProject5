@@ -33,7 +33,7 @@ router.get("/:id", auth.verifyToken, User.verify, async (req, res) => {
 });
 
 // upload single game
-router.post("/", async (req, res) => {
+router.post("/", auth.verifyToken, User.verify, async (req, res) => {
     const game = new Game({
         user: req.user,
         name: req.user.name,
@@ -42,8 +42,8 @@ router.post("/", async (req, res) => {
     });
 
     try {
-        await game.save();
-        res.send(game);
+        let games = await game.save();
+        res.send(games);
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
