@@ -26,6 +26,49 @@ export default new Vuex.Store({
       } catch (error) {
         return "";
       }
+    },
+    async register(context, data) {
+      try {
+        let response = await axios.post("/api/users", data);
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async login(context, data) {
+      try {
+        let response = await axios.post("/api/users/login", data);
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async logout(context) {
+      try {
+        await axios.delete("/api/users");
+        context.commit('setUser', null);
+        return "";
+      } catch (error) {
+        return error.response.data.message;
+      }
+    },
+    async getUser(context) {
+      try {
+        let response = await axios.get("/api/users");
+        context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
+    },
+    async finishGame(context, data) {
+      try {
+        let response = await axios.post("/api/games", data);
+      } catch(error) {
+        return error.response.data.message;
+      }
     }
   }
 })
