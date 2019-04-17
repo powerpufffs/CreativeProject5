@@ -20,10 +20,11 @@ export default new Vuex.Store({
   actions: {
     async getCards(context) {
       try {
-        await axios
-      
+        let response = await axios.get("/api/cards");
+        context.commit('setCards', response.data);
+        return "";
       } catch (error) {
-
+        return "";
       }
     }
   }

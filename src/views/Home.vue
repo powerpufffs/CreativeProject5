@@ -13,8 +13,5 @@ export default {
   components: {
     Game
   },
-  methods: {
-
-  },
 }
 </script>

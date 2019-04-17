@@ -1,17 +1,21 @@
 <template>
-  <div class="hello">
-    <p>Current best attempt is: {{ topScore.duration }} by {{ topScore.name }}</p>
-    <div class="container">
-      <div class="cards">
-        <div class="card cardFlip" v-for="card in cards" :key="card._id" :class="cardClasses[card.name]"
-            @click="flipCard(card)">
-            <div v-if="!card.flipped">
-                <div class="back"></div>
-            </div>
-            <div v-else>
-                <div class="front" :style="{ backgroundImage: 'url(' + card.image + ')' }"></div>
-            </div>
-        </div>
+  <div class="Master">
+    <div style="margin-bottom: 2rem">
+        <span class="label">Time Elapsed: </span>
+        <span class="value">{{ duration }} seconds</span>
+    </div>
+    <div style="margin-bottom: 2rem">
+        <span class="label">Turns: </span>
+        <span class="value">{{ turns }}</span>
+    </div>
+    <div class="cards">
+      <div class="card" v-for="card in cards" :key="card._id" @click="flipCard(card)">
+          <div v-if="!card.flipped">
+              <div class="back"></div>
+          </div>
+          <div v-else>
+              <div class="front" :style="{ backgroundImage: 'url(' + card.image + ')' }"></div>
+          </div>
       </div>
     </div>
   </div>
@@ -29,7 +33,7 @@ export default {
       matchedPairs: 0,
       prevCardIndex: -1,
       secondFlip: false,
-      duation: 0,
+      duration: 0,
     }
   },
   methods: {
@@ -92,11 +96,25 @@ export default {
 			this.timer();
 		},
 		timer() {
-			setTimeout(this.incrementTime, 1000);
+			let t = setTimeout(this.incrementTime, 1000);
     },
+    prepareCards() {
+      this.cards = this.cards
+      .concat(this.cards.map((card) => ({
+        name: card.name + '',
+        image: card.image + ''
+      }))).sort(() => 0.5 - Math.random());
+
+      this.cards.forEach((card) => {
+				this.$set(card, 'flipped', false);
+				this.$set(card, 'found', false);
+			});
+    }
   },
   async created() {
     await this.$store.dispatch("getCards");
+    this.cards = this.$store.state.cards;
+    this.prepareCards();
   }
 }
 </script>
@@ -117,4 +135,41 @@ li {
 a {
   color: #42b983;
 }
+
+.cards {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.card {
+  height: 150px;
+  width: 100px;
+  margin: 1rem;
+}
+
+.front, .back {
+  border-radius: 5px;
+  /* position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0; */
+  width: 100px;
+  height: 150px;
+  background-color: white;		
+}
+
+.back {
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/102308/card_backside.jpg');
+  background-size: 90%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.front {    
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center;			
+}
+
 </style>
