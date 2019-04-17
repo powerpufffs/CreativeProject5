@@ -20,7 +20,8 @@ app.use(cookieParser());
 const users = require("./users.js");
 app.use("/api/users", users.routes);
 
-const photos = require("./games.js");
-app.use("/api/games", photos.routes);
+const cards = require("./cards.js");
+app.use("/api/cards", cards.routes);
 
 app.listen(3012, () => console.log('Server listening on port 3012!'));
+

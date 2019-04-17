@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const express = require("express");
 const router = express.Router();
 const auth = require("./auth.js");
-
 const users = require("./users.js");
 const User = users.model;
 
@@ -14,7 +13,8 @@ const cardSchema = new mongoose.Schema({
 const Card = mongoose.model('cards', cardSchema);
 
 // get all cards
-router.get("/", auth.verifyToken, User.verify, async (req, res) => {
+// auth.verifyToken, User.verify,
+router.get("/", async (req, res) => {
     try {
         let cards = await Card.find();
         return res.send(cards);
